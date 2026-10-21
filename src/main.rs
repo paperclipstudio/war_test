@@ -202,7 +202,7 @@ fn main() {
     let sword = 5;
     let magic_wand = 12;
     let joker = 100;
-    let player_states = vec![
+    let player_states = [
         Deck::new("starting").adds(start.clone()),
         Deck::new("+sword").adds(start.clone()).add(sword),
         Deck::new("+upgrade").adds(start.clone()).upgrade(),
@@ -219,7 +219,7 @@ fn main() {
             .upgrade(),
     ];
 
-    let enemys = vec![
+    let enemys = [
         Deck::new("Sleepy Giant").adds(vec![1, 1, 1, 1, 2, 2, 3, 4]),
         Deck::new("?????").adds(vec![1, 1, 1, 2, 2, 4]),
         Deck::new("Queen Bee").adds(vec![1, 3, 3, 4, 4, 6]),
@@ -235,20 +235,21 @@ fn main() {
     println!("┏━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━┯━━━━━━━┯━━━━━━━┓");
     println!("┃ Player               │ Enemies              │  Win  │  Tie  │ Lose  ┃");
     println!("┠──────────────────────┼──────────────────────┼───────┼───────┼───────┃");
-    if true {
-        player_states.iter().for_each(|hand| {
-            enemys.iter().for_each(|other| {
-                let (win, tie) = hand.battle(&other);
-                println!(
-                    "┃ {:20} │ {:20} │  {win:3}% │  {tie:3}% │  {:3}% ┃",
-                    hand.name,
-                    other.name,
-                    100 - win - tie
-                );
-                //here
-            });
-            println!("┠──────────────────────┼──────────────────────┼───────┼───────┼───────┃");
+
+    player_states.iter().enumerate().for_each(|(i, hand)| {
+        enemys.iter().for_each(|other| {
+            let (win, tie) = hand.battle(other);
+            println!(
+                "┃ {:20} │ {:20} │  {win:3}% │  {tie:3}% │  {:3}% ┃",
+                hand.name,
+                other.name,
+                100 - win - tie
+            );
         });
-    }
-    println!("┗━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━┷━━━━━━━┷━━━━━━━┛");
+        if i != player_states.len() - 1 {
+            println!("┠──────────────────────┼──────────────────────┼───────┼───────┼───────┃");
+        } else {
+            println!("┗━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━┷━━━━━━━┷━━━━━━━┛");
+        }
+    });
 }
